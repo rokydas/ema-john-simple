@@ -1,11 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { getDatabaseCart } from '../../utilities/databaseManager';
+import fakeData from '../../fakeData';
 
 const Cart = (props) => {
-    const cart = props.cart;
+    const cart = getDatabaseCart();
+    const productKeys = Object.keys(cart);
+    const counts = Object.values(cart);
+
+    const cartProducts = productKeys.map(key => {
+        const product = fakeData.find( pd => pd.key === key);
+        return product;
+    })
+
+    // console.log(cartProducts);
+
+    for (let i = 0; i < cartProducts.length; i++) {
+        cartProducts[i].count = counts[i];
+    }
+
     let total = 0;
-    for (let i = 0; i < cart.length; i++) {
-        total += cart[i].price;
+    let totalCount = 0;
+    for (let i = 0; i < cartProducts.length; i++) {
+        total += cartProducts[i].price * cartProducts[i].count;
+        totalCount += cartProducts[i].count;
     }
 
     let shipping = 0;
@@ -18,16 +35,16 @@ const Cart = (props) => {
     else if(total > 0){
         shipping = 10.99;
     }
-    console.log(cart);
+    // console.log(cart);
     return (
         <div>
-            <h5>Order Summary: {cart.length}</h5>
-            <p>Items Ordered: {cart.length}</p>
+            <h5>Order Summary: {totalCount}</h5>
+            <p>Items Ordered: {totalCount}</p>
             <p>Shipping Cost: {shipping}</p>
             <p>Total Price: {total + shipping}</p>
-            <Link to="/review">
-                <button className="cart-button">Review Order</button>
-            </Link>
+            {
+                props.children
+            }            
             
         </div>
     );

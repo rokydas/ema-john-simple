@@ -5,9 +5,11 @@ import './Product.css'
 import { Link } from 'react-router-dom';
 
 const Product = (props) => {
-    console.log(props.product);
+    // console.log(props.product);
     const product = props.product;
     const features = product.features;
+    const addButton = props.addButton;
+    // console.log(features);
     // console.log(props.features[0]);
     return (
         <div className="product-box">
@@ -21,7 +23,11 @@ const Product = (props) => {
                         <h6>by: {product.seller}</h6>
                         <h6>${product.price}</h6>
                         <h6>Only {product.stock} left in stock - order soon</h6>
-                        {props.showAddToCart && <button onClick={() => props.addButton(product)} className="cart-button"><FontAwesomeIcon icon={faShoppingCart} />Add to cart</button>}
+                        {props.showAddToCart && 
+                        <button onClick={() => addButton(product)} className="cart-button">
+                            <FontAwesomeIcon icon={faShoppingCart} />
+                            Add to cart
+                        </button>}
                     </div>
                     <div className="feature">
                         <ul>

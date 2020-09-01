@@ -3,6 +3,8 @@ import fakeData from '../../fakeData';
 import './Shop.css';
 import Product from '../Product/Product';
 import Cart from '../Cart/Cart';
+import { addToDatabaseCart } from '../../utilities/databaseManager';
+import { Link } from 'react-router-dom';
 
 const Shop = () => {
     const first10 = fakeData.slice(0, 10);
@@ -11,9 +13,13 @@ const Shop = () => {
     // console.log(products[0]);
 
     const addButton = (product) => {
-        console.log(product);
+        // console.log(product);
         const newCart = [...cart, product];
         setCart(newCart);
+        const sameProducts = newCart.filter(pd => pd.key === product.key);
+        // console.log(sameProducts);
+        const count = sameProducts.length;
+        addToDatabaseCart(product.key, count);
     }
     
     // console.log(fakeData);
@@ -25,7 +31,11 @@ const Shop = () => {
                 }           
             </div>
             <div className="cart-container">
-                <Cart cart={cart}></Cart>
+                <Cart cart={cart}>
+                    <Link to="/review">
+                        <button className="cart-button">Review Order</button>
+                    </Link>
+                </Cart>
             </div>
             
         </div>
